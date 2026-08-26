@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quickstart | Krypt Kernel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['JetBrains Mono', 'Fira Code', 'Courier New', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-black text-emerald-400 font-mono antialiased min-h-screen flex flex-col justify-between border-t-4 border-emerald-500">
+
+  <!-- Nav Header -->
+  <nav class="border-b border-emerald-950 bg-black/90 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="index.html" class="flex items-center space-x-2 text-emerald-400 font-bold text-lg hover:text-emerald-300">
+        <span class="text-zinc-500">root@krypt:~#</span> <span>man krypt</span>
+      </a>
+      <div class="flex space-x-6 text-sm">
+        <a href="index.html" class="text-zinc-400 hover:text-emerald-400 transition">[Home]</a>
+        <a href="modules.html" class="text-zinc-400 hover:text-emerald-400 transition">[Modules]</a>
+        <a href="quickstart.html" class="text-emerald-400 font-bold underline underline-offset-4">[Quickstart]</a>
+        <a href="https://github.com/DlopedDtorred/KryptKernel" target="_blank" class="border border-emerald-800 text-emerald-400 px-3 py-1 hover:bg-emerald-950 transition">[Source Code]</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-5xl mx-auto px-6 py-12 w-full">
+    <div class="text-xs text-zinc-500 mb-6 flex justify-between border-b border-zinc-800 pb-2">
+      <span>KRYPT(8) System Manager Manual</span>
+      <span>KRYPT(8)</span>
+    </div>
+
+    <h1 class="text-xl font-bold text-zinc-100 mb-4">NAME</h1>
+    <p class="text-zinc-400 text-sm mb-6 pl-4">krypt - monolithic kernel initialization and compilation manual</p>
+
+    <h1 class="text-xl font-bold text-zinc-100 mb-4">SYNOPSIS</h1>
+    <div class="bg-zinc-950 border border-zinc-800 p-4 text-xs mb-6 font-mono text-emerald-300">
+      git submodule add https://github.com/DlopedDtorred/KryptKernel.git lib/KryptKernel
+    </div>
+
+    <h1 class="text-xl font-bold text-zinc-100 mb-4">DESCRIPTION</h1>
+    <p class="text-zinc-400 text-sm mb-4 pl-4">To include the kernel in your ESP32 project sketch, include the master header file <code class="text-emerald-400">&lt;Krypt.h&gt;</code> and instantiate the global kernel controller.</p>
+
+    <div class="border border-zinc-800 bg-zinc-950 p-6 mb-8">
+      <div class="text-xs text-zinc-500 mb-2 border-b border-zinc-900 pb-1">Example: main.cpp</div>
+      <pre class="text-xs text-zinc-300 overflow-x-auto leading-relaxed"><code><span class="text-emerald-500">#include</span> <span class="text-yellow-600">&lt;Arduino.h&gt;</span>
+<span class="text-emerald-500">#include</span> <span class="text-yellow-600">&lt;Krypt.h&gt;</span>
+
+<span class="text-zinc-500">// Instantiate the Kernel globally</span>
+KryptKernel Krypt;
+
+<span class="text-emerald-400">void</span> <span class="text-blue-400">setup</span>() {
+  Serial.<span class="text-blue-400">begin</span>(<span class="text-yellow-500">115200</span>);
+
+  <span class="text-emerald-500">// Boot up all kernel modules (HAL, FS, Task, Net)</span>
+  <span class="text-emerald-400">if</span> (Krypt.<span class="text-blue-400">boot</span>()) {
+    Serial.<span class="text-blue-400">println</span>(<span class="text-yellow-600">"[OK] Krypt Kernel booted successfully"</span>);
+  }
+
+  <span class="text-zinc-500">// Read telemetry through KryptHAL</span>
+  uint32_t freeRam = Krypt.hal.<span class="text-blue-400">getFreeRAM</span>();
+  Serial.<span class="text-blue-400">printf</span>(<span class="text-yellow-600">"Free Memory: %d KB\n"</span>, freeRam / <span class="text-yellow-500">1024</span>);
+}
+
+<span class="text-emerald-400">void</span> <span class="text-blue-400">loop</span>() {
+  <span class="text-zinc-500">// FreeRTOS handles background tasks automatically</span>
+}</code></pre>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-zinc-900 py-6 text-center text-zinc-600 text-xs">
+    <p>Krypt Kernel Project &copy; GNU / MIT Licensed. Designed for ESP32 architectures.</p>
+  </footer>
+
+</body>
+</html>
